@@ -6,6 +6,11 @@
     overflow: hidden;
 }
 
+* {
+    font-family: Roboto,
+        "Helvetica Neue",
+        sans-serif;
+}
 
 
 .hide {
@@ -16,9 +21,14 @@
     color: var(--text-link);
 }
 
+.main.tabs .tab {
+    padding-bottom: 3px;
+}
+
 .tab.active {
     color: var(--text-link);
     font-weight: 600;
+    padding-bottom: 3px;
     border-bottom: 2px solid var(--text-link);
 }
 
@@ -264,9 +274,7 @@
     pointer-events: none;
 }
 
-.mobile * {
-    font-size: 13px;
-}
+
 
 @keyframes rotate {
     from {
@@ -292,4 +300,23 @@
     background-color: #ffdd9e;
     padding: 2px;
     border-radius: 2px;
+}
+
+
+
+
+* {
+    font-size: 14px;
+}
+
+.mobile * {
+    font-size: 13px;
+}
+
+.filter-searched-mcqs {
+    display: none;
+}
+
+.search-mcq-overlay-inner:has(.search-results .que-div) .filter-searched-mcqs {
+    display: flex;
 }
