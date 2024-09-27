@@ -121,7 +121,7 @@
     background-color: #648aff;
 }
 
-.main>.tab-container {
+.main>.tab-container_ {
     max-height: calc(100vh - 70px);
     overflow-y: scroll;
     padding-bottom: 40px;
@@ -266,7 +266,7 @@
 
 .mock-test .question-list .que-div .selected,
 .mock-test .dot.selected {
-    background-color: #e6a85cd0;
+    background-color: #ffd39ed0;
 }
 
 .static-mock-item-inner .disabled {
@@ -309,9 +309,7 @@
     font-size: 14px;
 }
 
-.mobile * {
-    font-size: 13px;
-}
+
 
 .filter-searched-mcqs {
     display: none;
@@ -319,4 +317,8 @@
 
 .search-mcq-overlay-inner:has(.search-results .que-div) .filter-searched-mcqs {
     display: flex;
+}
+
+.mobile * {
+    font-size: 13px;
 }

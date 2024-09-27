@@ -169,7 +169,7 @@ function LoadHTML() {
                 <div className="tab-container page notes max-h-[calc(100vh - 70px)] overflow-y-scroll pb-30 hide">
                     <h1>Notes</h1>
                 </div>
-                <div className="tab-container page mock max-h-[calc(100vh - 70px)] overflow-y-scroll pb-30 hide">
+                <div className="tab-container page mock h-full hide">
                     <h1>Mock</h1>
                 </div>
             </div>
@@ -179,8 +179,6 @@ function LoadHTML() {
 
 function loadHTML(arg) {
     let container = document.querySelector(".app-container");
-    ReactDOM.render(<LoadHTML />, container);
-    return;
     if (arg != "home") {
         ReactDOM.render(<LoadSignInPageHTML />, container);
     } else {
@@ -1886,27 +1884,43 @@ function ChapterWiseTagItemInNewMockPageHTML({ tag_item, level }) {
     );
 }
 
+function switchMockTabs(tab_name, event) {
+    let tab_section = event.target.closest(".tab-section");
+    let selected_tab = tab_section.querySelector(".text-blue-500");
+    if (selected_tab) {
+        selected_tab.classList.replace("text-blue-500", "text-gray-400");
+    }
+    event.target.classList.replace("text-gray-400", "text-blue-500");
+
+    let tab_containers = tab_section.querySelectorAll(".tab-container");
+    tab_containers.forEach((container) => {
+        container.classList.add("hide");
+    });
+    let selected_tab_container = tab_section.querySelector(`.tab-container.${tab_name}`);
+    selected_tab_container.classList.remove("hide");
+}
+
 function MockTestPageHTML() {
     return (
         <div>
             <div className="tab-section flex flex-col gap-2">
-                <div className="page-tabs p-2 tabs flex gap-2">
+                <div className="page-tabs h-[40px] p-2 tabs flex gap-2 border-2">
                     <div
-                        className="page-tab tab cursor-pointer new-mock active flex-1 flex justify-center items-center"
+                        className="page-tab tab cursor-pointer new-mock  flex-1 flex justify-center items-center text-blue-500 font-bold"
                         onClick={(event) => {
-                            switchTabs("new-mock", event);
+                            switchMockTabs("new-mock", event);
                             document.querySelector(".new-mock .tab.subject-wise").click();
                         }}
                     >
                         New Mock
                     </div>
-                    <div className="page-tab tab cursor-pointer static-mocks flex-1 flex justify-center items-center" onClick={(event) => switchTabs("static-mocks", event)}>
+                    <div className="page-tab tab cursor-pointer static-mocks flex-1 flex justify-center items-center text-gray-400 font-bold" onClick={(event) => switchMockTabs("static-mocks", event)}>
                         Static Mocks
                     </div>
                     <div
-                        className="page-tab tab cursor-pointer mock-history flex-1 flex justify-center items-center"
+                        className="page-tab tab cursor-pointer mock-history flex-1 flex justify-center items-center text-gray-400 font-bold"
                         onClick={(event) => {
-                            switchTabs("mock-history", event);
+                            switchMockTabs("mock-history", event);
                             userdata.mock_tests.forEach((mock) => {
                                 let div = document.createElement("div");
                                 div.className = "mock-history-item min-w-[300px] my-2 p-2";
@@ -1921,24 +1935,24 @@ function MockTestPageHTML() {
                         Mock History
                     </div>
                 </div>
-                <div className="tabs-container flex flex-col gap-2 p-2">
-                    <div className="tab-container new-mock">
-                        <button className="text-md font-bold link border border-blue-300 bg-white text-blue-600 hover:bg-blue-600 hover:text-white transition duration-200 ease-in-out rounded-md py-2 px-4 inline-block cursor-pointer my-2" onClick={startNewMockTest}>
+                <div className="tabs-container flex flex-col gap-2 py-2 px-3  max-h-[calc(100vh-95px)] overflow-y-scroll">
+                    <div className="tab-container  new-mock px-2  flex flex-col justify-start items-start gap-2 h-full max-h-[calc(100vh-85px)] overflow-y-scroll">
+                        <button className="text-md link border border-blue-500 bg-white text-blue-500  rounded-md py-2 px-4 flex justify-center items-center cursor-pointer my-2" onClick={startNewMockTest}>
                             Start new mock test
                         </button>
                         <button className="hide text-md font-bold link border border-blue-300 bg-white text-blue-600 hover:bg-blue-600 hover:text-white transition duration-200 ease-in-out rounded-md py-2 px-4 inline-block cursor-pointer my-2" onClick={createSharedMockTest}>
                             Create a shared mock test
                         </button>
 
-                        <div className="flex flex-col customise-mock justify-start items-start gap-2">
-                            <span className="text-xl p-2 m-2   text-gray-500 font-bold">Customise mock test</span>
-                            <div className="flex justify-start items-center gap-2">
-                                <span className="text-[1.2em] font-bold text-gray-500">Set total questions:</span>
+                        <div className="flex flex-col customise-mock w-full justify-start items-start gap-2">
+                            <span className="  text-xl p-2 m-2  text-center w-full  text-gray-500 font-bold">Customise Mock Test</span>
+                            <div className=" flex justify-start items-center gap-2 p-2">
+                                <span className="text-md  text-gray-500">Set total questions:</span>
                                 <input type="number" className="total-questions-for-mock w-[50px] p-1 text-center border border-gray-300 rounded-md" />
                                 <span className="text-[9px] text-gray-400">(20 - 50)</span>
                             </div>
-                            <div className="flex justify-center w-full items-center gap-2">
-                                <span className="text-[1.2em] font-bold text-gray-500">Select Chapter or Tag</span>
+                            <div className="flex justify-center items-center w-full  gap-2 p-2">
+                                <span className="text-md  text-gray-500">Select chapter or tags from below:</span>
                                 <span
                                     className="link ml-auto px-3 cursor-pointer"
                                     onClick={(event) => {
@@ -1959,20 +1973,20 @@ function MockTestPageHTML() {
                                     clear all
                                 </span>
                             </div>
-                            <div className="filter-chapters-tags-div w-[80%] flex flex-col justify-start items-center gap-2 m-2">
-                                <input type="text" className="w-[90%] p-2 border border-gray-300 rounded-md text-center mx-1 my-2" placeholder=" Filter Chapters or Tags" />
-                                <div className="tab-section">
-                                    <div className="tabs flex justify-center align-middle gap-4 p3  w-full">
-                                        <div className="tab flex justify-center active flex-1 p-2 subject-wise cursor-pointer active text-sm text-no-wrap" onClick={(event) => switchTabs("subject-wise", event)}>
+                            <div className="filter-chapters-tags-div h-full w-full flex flex-col justify-start items-center gap-2 m-2">
+                                <input type="text" className="w-[90%] p-2 border border-gray-300 rounded-full text-center" placeholder=" Filter Chapters or Tags" onKeyUp={(event) => filterMcqTagItemsForCustomMock(event)} />
+                                <div className="tab-section flex flex-col justify-start items-center gap-2 w-full">
+                                    <div className="tabs h-[50px] flex justify-center align-middle gap-4 px-2 py-1 w-full border-b-2">
+                                        <div className="tab flex justify-center  flex-1 p-2 subject-wise cursor-pointer font-bold text-blue-500 text-sm text-no-wrap" onClick={(event) => switchCustomiseMockTabs("subject-wise", event)}>
                                             Subject Wise
                                         </div>
-                                        <div className="tab all-tags flex justify-center flex-1 p-2 cursor-pointer text-sm" onClick={(event) => switchTabs("all-tags", event)}>
+                                        <div className="tab all-tags flex justify-center flex-1 p-2 cursor-pointer font-bold text-gray-400 text-sm" onClick={(event) => switchCustomiseMockTabs("all-tags", event)}>
                                             All Tags
                                         </div>
                                     </div>
-                                    <div className="tab-containers p-3 flex ">
-                                        <div className="tab-container subject-wise max-h-[70vh] overflow-y-scroll mb-20px active "></div>
-                                        <div className="tab-container all-tags hide gap-2 flex justify-start flex-wrap max-h-[70vh] overflow-y-scroll mb-20px">
+                                    <div className="tab-containers w-full h-full max-h-[70vh] px-3 py-1 flex ">
+                                        <div className="tab-container subject-wise w-full px-3 block max-h-[70vh] overflow-y-scroll "></div>
+                                        <div className="tab-container all-tags w-full px-3 flex justify-start items-center gap-2 flex-wrap max-h-[70vh] overflow-y-scroll  hide ">
                                             {all_tags.map((tag) => (
                                                 <span
                                                     key={tag} // Use a unique key for each item
@@ -1994,7 +2008,7 @@ function MockTestPageHTML() {
                                                         event.target.classList.toggle("selected");
                                                     }}
                                                 >
-                                                    {capitalFirstLetterOfEachWord(tag)}
+                                                    {tag.toLowerCase()}
                                                 </span>
                                             ))}
                                         </div>
@@ -2003,11 +2017,11 @@ function MockTestPageHTML() {
                             </div>
                         </div>
                     </div>
-                    <div className="tab-container static-mocks hide">
+                    <div className="tab-container static-mocks hide flex flex-col  justify-start items-center gap-2 h-full max-h-[calc(100vh-85px)] overflow-y-scroll">
                         <input
                             type="text"
                             className=" w-[90%] p-2 border border-gray-300 rounded-md text-center mx-1 my-2"
-                            placeholder="Search or Filter Mock Text"
+                            placeholder="Search or Filter Static Mocks"
                             onChange={(event) => {
                                 let value = event.target.value.trim().toLowerCase();
                                 let mock_names = document.querySelectorAll(".static-mocks .static-mock-item .mock-name");
@@ -2020,7 +2034,7 @@ function MockTestPageHTML() {
                                 });
                             }}
                         />
-                        <div className="static-mocks-list">
+                        <div className="static-mocks-list border-t-2 py-2">
                             {static_mocks.map((mock) => (
                                 <div className="static-mock-item border border-gray-300 rounded-md p-2 m-2" id={mock.id} key={mock.id}>
                                     <StaticMockTestItemHTML mock={mock} />
@@ -2028,9 +2042,24 @@ function MockTestPageHTML() {
                             ))}
                         </div>
                     </div>
-                    <div className="tab-container flex justify-center items-center gap-2 flex-wrap mock-history hide">
-                        <input type="text" className="hide p-2 border border-gray-300 rounded-md" placeholder="Search or Filter Mock Text" />
-                        <div className="mock-history-list"></div>
+                    <div className="tab-container mock-history hide flex justify-center items-center flex-wrap  h-full max-h-[calc(100vh-85px)] overflow-y-scroll">
+                        <input
+                            type="text"
+                            className="p-2 w-[90%] border border-gray-300 rounded-md text-center my-2"
+                            placeholder="Search or Filter Mock History"
+                            onChange={(event) => {
+                                let value = event.target.value.trim().toLowerCase();
+                                let mock_names = document.querySelectorAll(".mock-history-list .mock-name");
+                                mock_names.forEach((mock_name) => {
+                                    if (mock_name.textContent.toLowerCase().includes(value)) {
+                                        mock_name.closest(".mock-history-item").classList.remove("hide");
+                                    } else {
+                                        mock_name.closest(".mock-history-item").classList.add("hide");
+                                    }
+                                });
+                            }}
+                        />
+                        <div className="mock-history-list w-full max-h-[calc(100vh-170px)] overflow-y-scroll flex justify-center items-center flex-wrap py-2 border-t-2"></div>
                     </div>
                 </div>
             </div>
@@ -2038,6 +2067,56 @@ function MockTestPageHTML() {
     );
 }
 
+function setTimer(minutes) {
+    const timerElement = document.querySelector(".mock-overlay .timer-text");
+    const endTime = Date.now() + minutes * 60 * 1000;
+
+    function updateTimer() {
+        const timeLeft = endTime - Date.now();
+        if (timeLeft <= 0) {
+            timerElement.textContent = "00:00";
+            clearInterval(timerInterval);
+            document.querySelector(".mock-overlay .submit-test").click();
+            return;
+        }
+
+        const mins = Math.floor((timeLeft / 1000 / 60) % 60);
+        const secs = Math.floor((timeLeft / 1000) % 60);
+
+        if (mins == 0 && secs == 1) {
+            document.querySelector(".submit-test").click();
+        }
+
+        const formattedTime = `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+        timerElement.textContent = formattedTime;
+    }
+
+    updateTimer();
+    const timerInterval = setInterval(updateTimer, 1000);
+}
+
+function filterMcqTagItemsForCustomMock(event) {
+    let input_value = event.target.value.trim().toLowerCase();
+    if (input_value != "") {
+        let tag_item_names = document.querySelectorAll(".new-mock .subject-wise .tag-name");
+        tag_item_names.forEach((tag_item_name) => {
+            if (tag_item_name.textContent.toLowerCase().includes(input_value)) {
+                tag_item_name.parentElement.classList.remove("hide");
+            } else {
+                tag_item_name.parentElement.classList.add("hide");
+            }
+        });
+
+        let tags = document.querySelectorAll(".new-mock .all-tags .tag");
+        tags.forEach((tag) => {
+            if (tag.textContent.toLowerCase().includes(input_value)) {
+                tag.classList.remove("hide");
+            } else {
+                tag.classList.add("hide");
+            }
+        });
+    }
+}
 function StaticMockTestItemHTML({ mock }) {
     let sub_wise_ques = [];
     subjects[exam].forEach((subject) => {
@@ -2082,37 +2161,52 @@ function StaticMockTestItemHTML({ mock }) {
     );
 }
 
+function switchCustomiseMockTabs(tab_name, event) {
+    let tab_section = event.target.closest(".tab-section");
+    let selected_tab = tab_section.querySelector(".text-blue-500");
+    if (selected_tab) {
+        selected_tab.classList.replace("text-blue-500", "text-gray-400");
+    }
+    event.target.classList.replace("text-gray-400", "text-blue-500");
+    let tab_containers = tab_section.querySelectorAll(".tab-container");
+    tab_containers.forEach((container) => {
+        container.classList.add("hide");
+    });
+    let selected_tab_container = tab_section.querySelector(`.tab-container.${tab_name}`);
+    selected_tab_container.classList.remove("hide");
+}
+
 function MockTestHistoryItemHTML({ mock }) {
     return (
-        <div className="mock-history-item-inner flex flex-col gap-2 border border-gray-300 rounded-md p-2">
-            <span className="text-xl font-bold text-gray-600 text-center">{mock.name}</span>
+        <div className="mock-history-item-inner flex flex-col justify-start items-start gap-2 flex-wrap border border-gray-300 rounded-md py-2 px-7 w-[fit-content]">
+            <span className="text-xl font-bold text-gray-500 text-center mock-name">{mock.name}</span>
             <span className="text-md text-gray-400">
                 Date: {mock.date.date} at {mock.date.time}
             </span>
-            <div className="flex justify-start items-center gap-2 hidden">
+            <div className="flex justify-start items-center gap-2 hide">
                 <span className="text-md">Total Questions: {mock.questions.length}</span>
                 <span className="text-md">Total Attempeted: {mock.total_attempeted}</span>
                 <span className="text-md text-green-500">Total Correct: {mock.total_correct}</span>
                 <span className="text-md text-red-500">Total Wrong: {mock.total_wrong}</span>
             </div>
 
-            <div className="flex justify-start items-end gap-2">
-                <span className="text-md border border-gray-300 rounded -md p-1 px-2">{mock.questions.length}</span>
-                <span className="text-md bg-gray-200 border border-gray-300 rounded-md p-1 px-2">{mock.total_attempeted}</span>
-                <span className="text-md bg-green-300 border border-gray-300 rounded-md p-1 px-2  text-gray-700 ">{mock.total_correct}</span>
-                <span className="text-md bg-red-300 border border-gray-300 rounded-md p-1 px-2  text-gray-700">{mock.total_wrong}</span>
-                <span
-                    className="text-md link cursor-pointer"
-                    onClick={() => {
-                        let div = document.createElement("div");
-                        div.className = "me-overlay prev-mock-test-questions";
-                        document.querySelector(".me-overlays").appendChild(div);
-                        ReactDOM.render(<PreviousMockTestQuestionsHTML mock={mock} />, div);
-                    }}
-                >
-                    Show questions
-                </span>
+            <div className="flex justify-start items-end gap-2 text-gray-500">
+                <span className="text-sm bg-gray-100 rounded-md p-1 px-2">{mock.questions.length}</span>
+                <span className="text-sm bg-gray-300 rounded-md p-1 px-2">{mock.total_attempeted}</span>
+                <span className="text-sm bg-green-200 rounded-md p-1 px-2">{mock.total_correct}</span>
+                <span className="text-sm bg-red-200 rounded-md p-1 px-2">{mock.total_wrong}</span>
             </div>
+            <span
+                className="text-md link cursor-pointer"
+                onClick={() => {
+                    let div = document.createElement("div");
+                    div.className = "me-overlay prev-mock-test-questions";
+                    document.querySelector(".me-overlays").appendChild(div);
+                    ReactDOM.render(<PreviousMockTestQuestionsHTML mock={mock} />, div);
+                }}
+            >
+                Show questions
+            </span>
             <span
                 className="text-md link cursor-pointer hidden"
                 onClick={() => {
@@ -2280,28 +2374,32 @@ function startNewMockTest(mock_obj) {
     document.querySelector(".me-overlays").appendChild(mock_overlay);
     ReactDOM.render(<MockTestOverlayHTML fil_ques={fil_ques} total_questions={total_questions} mock_obj={mock_obj} />, mock_overlay);
 
+    setTimeout(() => {
+        setTimer(Math.floor(total_questions));
+    }, 1000);
+
     //ReactDOM.render(<MockTestOverlayHTML fil_ques={fil_ques} total_questions={total_questions} />, mock_overlay);
     //openOverlay("mock");
 }
 function MockTestOverlayHTML({ fil_ques, total_questions, mock_obj }) {
     return (
-        <div className="container">
-            <div className="header  flex justify-start items-center max-w-[100vw] overflow-x-auto  px-2 py-4 bg-purple-400  gap-2">
+        <div className="container mock-overlay-inner h-full">
+            <div className="der flex justify-start items-center h-[65px] w-full overflow-x-auto  p-4 bg-blue-200  gap-2">
                 <div className="timer  flex justify-center items-center gap-2 bg-black text-white rounded-md px-2 py-1">
                     <i className="fa-regular fa-clock"></i>
-                    <span className="text-sm">{"19:00"}</span>
+                    <span className="text-sm timer-text">{"19:00"}</span>
                 </div>
-                <span className=" correct  bg-green-500  text-white rounded-md p-1">+2</span>
-                <span className=" wrong bg-red-500  text-white rounded-md p-1">0.6</span>
+                <span className="correct bg-green-500  text-white  py-1 px-2 rounded-md">+2</span>
+                <span className=" wrong bg-red-500  text-white rounded-md px-2 py-1">0.6</span>
                 <div className="share hide link flex items-center gap-1">
                     <i className="fa-solid fa-share"></i>
                     <span>Share</span>
                 </div>
-                <span className="text-md bg-white font-bold  text-green-500 text-no-wrap  rounded-md px-2 py-1 ml-auto cursor-pointer" onClick={(event) => submitMockTest(event, mock_obj)}>
+                <span className="text-sm bg-blue-700 font-bold  text-white text-no-wrap  rounded-md px-3 py-1 mx-2 ml-auto cursor-pointer" onClick={(event) => submitMockTest(event, mock_obj)}>
                     Submit
                 </span>
                 <i
-                    className="fa-regular fa-circle-xmark  text-xl cursor-pointer"
+                    className="fa-regular fa-circle-xmark  text-xl text-red-700 cursor-pointer"
                     onClick={(event) => {
                         event.target.closest(".me-overlay").remove();
                     }}
@@ -2309,10 +2407,10 @@ function MockTestOverlayHTML({ fil_ques, total_questions, mock_obj }) {
             </div>
 
             <div className="content mock-test ">
-                <div className="question-numbers flex justify-start items-center gap-2 flex-wrap px-2 py-3 max-h-[120px] overflow-y-scroll">
+                <div className="question-numbers flex justify-start items-center gap-2 flex-wrap  px-3 py-2 border-b-2  max-h-[120px] overflow-y-scroll">
                     {fil_ques.map((ques, index) => (
                         <span
-                            className="  question-number dot border border-gray-700 bg-blue-100 text-gray-700 rounded-full cursor-pointer text-[10px] py-0.5 px-1"
+                            className="  question-number dot  bg-gray-200 text-gray-700 rounded-md cursor-pointer text-[10px] py-1 px-2"
                             id={index}
                             key={index}
                             onClick={(event) => {
@@ -2325,11 +2423,11 @@ function MockTestOverlayHTML({ fil_ques, total_questions, mock_obj }) {
                                 }, 2000);
                             }}
                         >
-                            {index + 1 < 9 ? `0${index + 1}` : index + 1}
+                            {index + 1 <= 9 ? `0${index + 1}` : index + 1}
                         </span>
                     ))}
                 </div>
-                <div className="question-list  block max-h-[calc(100vh-100px)] overflow-y-auto p-2">
+                <div className="question-list  block max-h-[calc(100vh-170px)] overflow-y-auto py-2 px-4">
                     {fil_ques.map((ques, index) => (
                         <div className="question-div" key={index} id={index}>
                             {GetMcqDiv({ que: ques, type: "mock", index: index + 1 })}
@@ -2665,19 +2763,44 @@ function SelectionOverlayHTML({ selectedText }) {
 }
 //start app
 
+async function clearCache() {
+    // Store user data in a variable
+
+    // Unregister all service workers
+    if ("serviceWorker" in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        for (let registration of registrations) {
+            await registration.unregister();
+        }
+    }
+
+    // Clear all caches
+    const cacheNames = await caches.keys();
+    for (let name of cacheNames) {
+        await caches.delete(name);
+    }
+}
+
 let user_login_data = {};
 async function startApp() {
+    let local_cache_id = localStorage.getItem("esa_cache_id");
+    let cache_id = "2024_09_27_00_00_00";
+    if (local_cache_id != cache_id) {
+        clearCache();
+        localStorage.setItem("esa_cache_id", cache_id);
+        window.location.reload();
+    }
     loadHTML();
-    //user_login_data = localStorage.getItem("esa_user_login_data");
-    user_login_data = {
+    user_login_data = localStorage.getItem("esa_user_login_data");
+    /*user_login_data = {
         display_name: "Mehboob Elahi",
         email: "mehboob4ias@gmail.com",
         photo_url: "https://lh3.googleusercontent.com/a/ACg8ocKW5Wsgjwx6AGuJxEon1lvuwCGJ_eoW64nRUneHBVjzadW_T7F9Iw=s96-c",
         userid: "UarmygN6ei7Kjo1",
         username: "mehboob4ias",
-    };
+    };*/
     if (user_login_data) {
-        // user_login_data = JSON.parse(user_login_data);
+        user_login_data = JSON.parse(user_login_data);
     } else {
         user_login_data = {};
     }
@@ -2876,7 +2999,7 @@ function TodayPractisedQuestionsOverlayHTML({ today_questions, type }) {
     return (
         <div className="container ">
             <div className="header py-3 px-4 flex justify-center items-center gap-2 text-gray-600 text-xl border-b-2">
-                <span className="text-xl font-bold">{type ? (type == "all" ? "Today All Practsed Questions" : type == "correct" ? "Today Correct Practsed Questions" : "Today Wrong Practsed Questions") : " Practised Questions"}</span>
+                <span className="text-xl font-bold">{type ? (type == "all" ? "Today Practised All Questions" : type == "correct" ? "Today Practised Correct Questions" : "Today Practised Wrong Questions") : " Practised Questions"}</span>
                 <i
                     className="fa-regular fa-circle-xmark text-xl ml-auto cursor-pointer"
                     onClick={(event) => {
@@ -2992,7 +3115,7 @@ function switchTab(direction, event) {
         return; // Do nothing if the event target doesn't meet the criteria
     }
 
-    const tabs = document.querySelectorAll(".tab");
+    const tabs = document.querySelectorAll(".main.tabs > .tab");
     let activeIndex = -1;
 
     tabs.forEach((tab, index) => {
