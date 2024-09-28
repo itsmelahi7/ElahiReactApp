@@ -49,7 +49,7 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
 function LoadSignInPageHTML() {
     return (
-        <div className="flex flex-col justify-center items-center h-full w-full bg-blue-200">
+        <div className="flex flex-col justify-center items-center h-full w-ful">
             <div className="app-loading bg-black fixed top-0 left-0 w-full h-full flex justify-center items-center">
                 <img src="/assets/esa_logo.png" alt="app-logo" className="w-[100px] rounded-full rotate" />
             </div>
@@ -2785,10 +2785,10 @@ let user_login_data = {};
 async function startApp() {
     let local_cache_id = localStorage.getItem("esa_cache_id");
     let cache_id = "2024_09_27_00_00_00";
-    if (local_cache_id != cache_id) {
+    if (true || local_cache_id != cache_id) {
         clearCache();
         localStorage.setItem("esa_cache_id", cache_id);
-        window.location.reload();
+        //window.location.reload();
     }
     loadHTML();
     user_login_data = localStorage.getItem("esa_user_login_data");
