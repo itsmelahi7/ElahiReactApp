@@ -2248,7 +2248,7 @@ function PreviousMockTestQuestionsHTML({ mock }) {
 
 function popupAlert(message, time_in_sec, color) {
     var div = document.createElement("div");
-    div.className = `hide me-popup-alert flex fixed top-5 left-1/2 transform -translate-x-1/2 ${color ? color : "bg-blue-700"} p-2.5 px-3.5 rounded text-white z-50 min-w-[min(300px,70vw)] flex items-baseline`;
+    div.className = ` me-popup-alert flex fixed top-5 left-1/2 transform -translate-x-1/2 ${color ? color : "bg-blue-700"} p-2.5 px-3.5 rounded text-white z-50 min-w-[min(300px,70vw)] flex items-baseline`;
     div.innerHTML = `
         <span class="message flex-1">${message}</span>
         <span class="close ml-auto w-5 h-5 flex justify-center items-center cursor-pointer">x</span>
