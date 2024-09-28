@@ -485,8 +485,8 @@ function LoadMcqPageHTML() {
 
 function NotesPageHTML() {
     return (
-        <div>
-            <div className="flex gap-5 justify-center items-center p-2 border-b-2 border-gray-300 ">
+        <div className="notes-page-inner flex flex-col h-full">
+            <div className="flex gap-5 h-full justify-center items-center p-2 border-b-2 border-gray-300 ">
                 <div className="search-notes flex justify-center items-center gap-2 border rounded-md px-2 py-1 cursor-pointer link" onClick={() => searchInNotesLoadOverlay()}>
                     <i className="fa-light fa-magnifying-glass text-sm"></i>
                     <span className="text-sm text-no-wrap opacity-70"> {is_mobile ? "Search in notes" : "Search in notes"}</span>
@@ -500,7 +500,7 @@ function NotesPageHTML() {
             <div className="chapter h-full w-full  flex flex-col" id="dwd">
                 <div className="title page-title me-bold text-xl px-2 py-3" id="dwd"></div>
                 <div className="me-iframe-div"></div>
-                <div className="children block  min-h-[calc(100vh-155px)] p-2 overflow-y-scroll">
+                <div className="children block  max-h-[calc(100vh-150px)] p-2 overflow-y-scroll">
                     <span className="text-gray-700 p-3 text-md align-middle"> Open a note from the chapter list or search in notes... </span>
                 </div>
             </div>
