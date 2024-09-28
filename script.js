@@ -161,7 +161,7 @@ function LoadHTML() {
                     <img src="/assets/esa_logo.png" alt="app-logo" className="w-[100px] rounded-full rotate" />
                 </div>
 
-                <div className="tab-container page home flex justify-center items-center gap-2 h-[calc(100vh-50px)] overflow-y-scroll hide "></div>
+                <div className="tab-container page home flex justify-center items-start gap-2 h-[calc(100vh-50px)] overflow-y-scroll hide "></div>
 
                 <div className="tab-container page mcq h-[calc(100vh - 50px)] overflow-y-scroll hide">
                     <h1>MCQ</h1>
